@@ -1,0 +1,131 @@
+﻿<mw:MetroWindow x:Class="ETSRobot_v2.view.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:control="clr-namespace:ETSRobot_v2.view.control"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModel="clr-namespace:ETSRobot_v2.vm"
+        xmlns:mw="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="{Binding Title}" 
+        Width="1300" Height="300"
+        ResizeMode="CanResize" WindowStartupLocation="CenterScreen"        
+        mc:Ignorable="d">
+
+    <Window.DataContext>
+        <viewModel:MainVM />
+    </Window.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Menu>
+            <MenuItem Header="Основное">
+                <MenuItem Header="..."/>
+                <MenuItem Header="Текущий брокер">
+                    <MenuItem Header="Альтаир Нур" Command="{Binding AltaCmd}" IsChecked="{Binding AltaCmdChk}"/>
+                    <MenuItem Header="Корунд-777" Command="{Binding KordCmd}" IsChecked="{Binding KordCmdChk}"/>
+                    <MenuItem Header="Ак Алтын Ко" Command="{Binding AkalCmd}" IsChecked="{Binding AkalCmdChk}"/>
+                    <MenuItem Header="Альта и К" Command="{Binding AltkCmd}" IsChecked="{Binding AltkCmdChk}"/>
+                    <MenuItem Header="Тестовый (TRN6)" Command="{Binding Trn6Cmd}" IsChecked="{Binding Trn8CmdChk}"/>
+                    <MenuItem Header="Тестовый (TRN7)" Command="{Binding Trn7Cmd}" IsChecked="{Binding Trn8CmdChk}"/>
+                    <MenuItem Header="Тестовый (TRN8)" Command="{Binding Trn8Cmd}" IsChecked="{Binding Trn8CmdChk}"/>
+                    <MenuItem Header="Тестовый (TRN9)" Command="{Binding Trn9Cmd}" IsChecked="{Binding Trn9CmdChk}"/>
+                    <MenuItem Header="Тестовый (TRN10)" Command="{Binding Trn10Cmd}" IsChecked="{Binding Trn10CmdChk}"/>
+                    <MenuItem Header="Тестовый (TRN11)" Command="{Binding Trn11Cmd}" IsChecked="{Binding Trn11CmdChk}"/>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Выход" Command="{Binding AppCloseCmd}"/>
+            </MenuItem>
+            <MenuItem Header="Режимы">
+                <MenuItem Header="Первая подача" Command="{Binding ModeFirstCmd}" IsChecked="{Binding ModeFirstCmdChk}"/>
+                <MenuItem Header="Конкурирующий" Command="{Binding ModeSimpleCmd}" IsChecked="{Binding ModeSimpleCmdChk}"/>
+            </MenuItem>
+        </Menu>
+
+        <DockPanel Grid.Row="1" VerticalAlignment="Center"
+                   Margin="5">
+            <TextBlock Text="{Binding TableTitleTxt}" TextAlignment="Center"
+                           DockPanel.Dock="Top" FontWeight="Bold"
+                       Foreground="#3fafdf"/>
+            <TextBlock Text="{Binding CurBroker}" TextAlignment="Left"
+                           DockPanel.Dock="Left" FontWeight="Bold"
+                       Foreground="#3997c1"/>
+            <DockPanel>
+                <CheckBox Content="Основной" IsChecked="{Binding IsPrimary}"
+                          Foreground="#3997c1" FontWeight="Bold" Visibility="Collapsed"/>
+                <TextBlock Text="{Binding CTime}" TextAlignment="Right"
+                           DockPanel.Dock="Right" FontWeight="Bold"
+                       Foreground="#3997c1"/>
+            </DockPanel>
+        </DockPanel>
+
+        <!--<Border Grid.Row="2" Visibility="{Binding AutoOrdersVisible}">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding AutoOrdersVisible}">
+                <control:AutoOrderLB x:Name="AutoOrderListBox" Grid.Row="1"
+                                 DataContext="{Binding AutoOrdersVM}" 
+                                 Visibility="{Binding AutoOrdersVisible}"/>
+            </ScrollViewer>
+        </Border>-->
+        <Border Grid.Row="2" Visibility="{Binding OrdersVisible}"
+                Margin="5" BorderBrush="Gray"
+                BorderThickness="1">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Visibility="{Binding OrdersVisible}"
+                          HorizontalScrollBarVisibility="Auto">
+                <control:OrderLB x:Name="OrderListBox" DataContext="{Binding OrdersVM}" 
+                                 Visibility="{Binding OrdersVisible}"/>
+            </ScrollViewer>
+        </Border>
+
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="0"
+                        Margin="5">
+                <Button Content="Подключиться" Command="{Binding ConnectCmd}"
+                        Visibility="{Binding OrdersVisible}" Margin="5"
+                        Background="#3fafdf" Foreground="White"
+                        IsEnabled="{Binding ConnectEnableBtn}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"
+                        Grid.Column="1" Margin="5">
+                <Button Command="{Binding AddCmd}" Content="Добавить" 
+                        IsEnabled="{Binding AddCmdEnable}" Margin="5"
+                        Background="#3fafdf" Foreground="White"/>
+                <Button Command="{Binding DeleteCmd}" Content="Удалить" 
+                        IsEnabled="{Binding DeleteCmdEnable}" Margin="5"
+                        Background="#3997c1" Foreground="White"/>
+            </StackPanel>
+            <!--<Button Command="{Binding AutoSendCmd}"
+                    Content="Авто подача" Visibility="{Binding AutoOrdersVisible}"/>-->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
+                        Grid.Column="2" Margin="5">
+                <Button Content="Подать все разом" Command="{Binding SendAllCmd}" 
+                        Background="#3fafdf" Foreground="White"
+                        Margin="5"/>
+                <Button Content="Остановить все разом" Command="{Binding StopAllCmd}" 
+                        Margin="5" Background="#3997c1" 
+                        Foreground="White"/>
+            </StackPanel>
+        </Grid>
+
+        <Expander Grid.Row="4" Header="Сообщения от сервера"
+                  Margin="5">
+            <Border Margin="5" Height="150"
+                BorderThickness="1" BorderBrush="Gray">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBlock Text="{Binding ServerLogsTxt}" Foreground="Gray"/>
+                </ScrollViewer>
+            </Border>
+        </Expander>
+    </Grid>
+</mw:MetroWindow>

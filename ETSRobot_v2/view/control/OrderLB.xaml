@@ -1,0 +1,135 @@
+﻿<UserControl x:Class="ETSRobot_v2.view.control.OrderLB"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:toolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+             xmlns:viewModel="clr-namespace:ETSRobot_v2.vm"
+             xmlns:mw="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             Height="Auto" Width="Auto"             
+             mc:Ignorable="d">
+
+    <ListBox x:Name="lstOrders" ItemsSource="{Binding Orders}"
+             SelectedItem="{Binding SelectedOrder}">
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="75"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="№" Margin="5 5 0 5"
+                                   Foreground="Gray" FontWeight="Bold"/>
+                        <TextBlock Margin="5 0" VerticalAlignment="Center"
+                               Text="{Binding Number}" Foreground="#3997c1"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="Код брокера" 
+                                   Foreground="Gray" FontWeight="Bold"
+                                   Margin="5 5 0 5"/>
+                        <ComboBox Margin="5 0"
+                              DisplayMemberPath="name" ItemsSource="{Binding FirmBroker}"
+                              SelectedIndex="0" SelectedItem="{Binding SelectedFirmBroker}" 
+                              Foreground="#3997c1" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Код клиента" 
+                                   Foreground="Gray" FontWeight="Bold"
+                                   Margin="5 5 0 5"/>
+                        <ComboBox Margin="5 0"
+                              DisplayMemberPath="settlPair" ItemsSource="{Binding Client}"
+                              SelectedIndex="0" SelectedItem="{Binding SelectedClient}" 
+                              IsEditable="True" Foreground="#3997c1"
+                              VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="3">
+                        <TextBlock Text="Код лота" 
+                                   Foreground="Gray" FontWeight="Bold"
+                                   Margin="5 5 0 5"/>
+                        <ComboBox Margin="5 0"
+                              DisplayMemberPath="name" ItemsSource="{Binding Issue}"
+                              SelectedIndex="0" SelectedItem="{Binding SelectedIssue}" 
+                              Foreground="#3997c1" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="4">
+                        <TextBlock Text="Стартовая сумма" 
+                                   Foreground="Gray" FontWeight="Bold"
+                                   Margin="5 5 0 5"/>
+                        <TextBox Margin="5 0"
+                                Text="{Binding SelectedIssue.nominal, StringFormat={}{0:N}}"  IsReadOnly="True"
+                                Foreground="#3997c1" VerticalAlignment="Center"
+                                 mw:TextBoxHelper.ClearTextButton="True"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="5">
+                        <TextBlock Text="Ценовой порог" 
+                                   Foreground="Gray" FontWeight="Bold"
+                                   Margin="5 5 0 5"/>
+                        <TextBox Margin="5 0" mw:TextBoxHelper.ClearTextButton="True"
+                             Text="{Binding BottomPrice,StringFormat={}{0:N}}" 
+                             Foreground="#3997c1" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="6">
+                        <TextBlock Text="Шаг понижения" 
+                                   Foreground="Gray" FontWeight="Bold"
+                                   Margin="5 5 0 5"/>
+                        <TextBox Margin="5 0" mw:TextBoxHelper.ClearTextButton="True"
+                             Text="{Binding Step,StringFormat={}{0:N}}" 
+                             Foreground="#3997c1" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="7">
+                        <TextBlock Text="Поданная сумма" 
+                                   Foreground="Gray" FontWeight="Bold"
+                                   Margin="5 5 0 5"/>
+                        <TextBox Margin="5 0" mw:TextBoxHelper.ClearTextButton="True"
+                             Text="{Binding LastPrice,StringFormat={}{0:N}}" 
+                             Foreground="#3997c1" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="8">
+                        <TextBlock Text="Текущая ставка" 
+                                   Foreground="Gray" FontWeight="Bold"
+                                   Margin="5 5 0 5"/>
+                        <TextBox Margin="5 0" mw:TextBoxHelper.ClearTextButton="True"
+                             Text="{Binding CurrentPrice, StringFormat={}{0:N}}" IsReadOnly="False"
+                             Foreground="#3997c1" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="9">
+                        <TextBlock Text="Режим подачи" 
+                                   Foreground="Gray" FontWeight="Bold"
+                                   Margin="5 5 0 5"/>
+                        <ComboBox Margin="5 0"
+                              DisplayMemberPath="type" ItemsSource="{Binding ModeType}"
+                              SelectedIndex="0" SelectedItem="{Binding SelectedMode}" 
+                              Foreground="#3997c1" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="10">
+                        <TextBlock Text="Основной" 
+                                   Foreground="Gray" FontWeight="Bold"
+                                   Margin="5 5 0 5"/>
+                        <CheckBox IsChecked="{Binding IsPrimary}" Margin="5 0"
+                                  Foreground="#3997c1" VerticalAlignment="Center"/>
+                        <!--<TextBox Margin="5 0" mw:TextBoxHelper.ClearTextButton="True"
+                             Text="{Binding PauseTime,StringFormat={}{0:N}}" 
+                             Foreground="#3997c1" VerticalAlignment="Center"/>-->
+                    </StackPanel>
+                    <StackPanel Grid.Column="11" VerticalAlignment="Center">
+                        <Button Margin="5 0"                            
+                            Command="{Binding StartCmd}" Background="#3fafdf"
+                            Content="{Binding StartCmdName}" Foreground="White"
+                            VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+    </ListBox>
+</UserControl>
